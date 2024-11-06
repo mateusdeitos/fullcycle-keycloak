@@ -1,0 +1,22 @@
+networks:
+  keycloak:
+    name: keycloak
+    external: true
+
+services:
+  app:
+    build: .
+    command: npm run start
+    networks:
+      - keycloak
+    ports:
+      - 3000:3000
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./
+          target: /app/
+          ignore:
+            - node_modules
+        - action: rebuild
+          path: package.json
